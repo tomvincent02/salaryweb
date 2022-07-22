@@ -1,34 +1,38 @@
 const express = require('express');
-const cors = require('cors');
+const app = express();
 const mongoose = require('mongoose');
 
-require('dotenv').config();
+const playermodel = require('./models/player');
+const salarymodel = require('./models/salary');
 
-const app = express();
-const port = process.env.PORT || 5004;
+const cors = require('cors');
 
 app.use(cors());
-app.use(express.json());
 
-const uri = process.env.ATLAS_URI;
-mongoose.connect(uri,{
-    }).then(()=>{
-     console.log('database connected')
-}).catch(err=>{
-    console.log('database not connected',err)
-});
-const connection = mongoose.connection;
-connection.once('open', () => {
-  console.log("MongoDB database connection established successfully");
+mongoose.connect('mongodb+srv://airpods1:apples%40reTastyif@cluster0.wao9w.mongodb.net/baseball_data?retryWrites=true&w=majority')
+
+app.listen(3301, () => {
+    console.log('server runs perfectly');
 })
 
-const exercisesRouter = require('./routes/exercises');
-const usersRouter = require('./routes/users');
+app.get("/getplayers", (req,res)=> {
+    playermodel.find({}, (err, result) => {
+        if (err){
+            res.json(err);
+        } else {
+            res.json(result);
+        }
+    });
+} );
 
-app.use('/exercises', exercisesRouter);
-app.use('/users', usersRouter);
 
-app.listen(port, () => {
-    console.log(`Express Server is running on port: ${port}`);
-});
+app.get("/getsalary", (req,res)=> {
+    salarymodel.find({}, (err, result) => {
+        if (err){
+            res.json(err);
+        } else {
+            res.json(result);
+        }
+    });
+} );
 
