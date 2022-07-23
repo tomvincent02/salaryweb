@@ -6,6 +6,10 @@ const playermodel = require('./models/player');
 const salarymodel = require('./models/salary');
 
 const cors = require('cors');
+const player = require('./models/player');
+
+
+const {getUser} = require('./controllers/controllers');
 
 app.use(cors());
 
@@ -35,4 +39,17 @@ app.get("/getsalary", (req,res)=> {
         }
     });
 } );
+
+
+app.get("/get/:playerID", async (req, res) => {
+    const find = await playermodel.findById(req, (err, data) => {
+        if (err) {
+            console.log(err);
+        } else {
+            console.log(data);
+        }
+    });
+
+}); 
+
 

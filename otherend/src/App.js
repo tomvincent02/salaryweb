@@ -5,6 +5,8 @@ import Axios from "axios";
 function App() {
 
   const [listOfPlayers, setListOfPlayers] = useState([]);
+  
+
 
   useEffect (() => {
     Axios.get("http://localhost:3301/getplayers").then((response) => {
@@ -25,7 +27,6 @@ function App() {
           return (
             <div>
               <h1>Player Full Name: {player.nameGiven}</h1>
-              <h2>Player ID: {player.playerID}</h2>
             </div>
           )
         })}
