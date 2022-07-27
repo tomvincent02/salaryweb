@@ -1,42 +1,53 @@
-import './App.css';
-import { useState, useEffect } from "react";
-import Axios from "axios";
+import React from 'react';
+import axios from 'axios';
 
-function App() {
+class App extends React.Component{
 
-  const [listOfPlayers, setListOfPlayers] = useState([]);
-  
+  state = {
+    nameGiven:''
+  }
 
+  handleChange = (event) => {
+    const target = event.target;
+    const name = target.name;
+    const value = target.value;
+    this.setState({
+      [name]: value
+    });
+  };
 
-  useEffect (() => {
-    Axios.get("http://localhost:3301/getplayers").then((response) => {
-      setListOfPlayers(response.data)
+  submit = (event) => {
+    event.preventDefault();
+
+    const payload = {
+      nameGiven: this.state.nameGiven
+    };
+
+    axios({
+      url: 'http://localhost:3301/getbodyid',
+      data:payload
     })
-  }, [])
+      .then(() => {
+        console.log('Data has been sent to the server');
+      })
+      .catch(() => {
+        console.log('Internal server error');
+      });;
+  };
 
-  // const searchPlayer = () => {
-  //   Axios.get("http://localhost;3301/getsalary").then((response) => {
-  //     setListofSalaries(response.data);
-  //   })
-  // }
+  render() {
 
-  return (
-    <div className="App">
-      <div className="playerDisplay">
-        {listOfPlayers.map((player) => {
-          return (
-            <div>
-              <h1>Player Full Name: {player.nameGiven}</h1>
-            </div>
-          )
-        })}
-      </div>
 
+    console.log('State', this.state);
+    return (
       <div>
-        <input type ="text" placeholder= "Enter Player's Name..."/>
+        <h2> Salary Webpage</h2>
+      <form onSubmit={this.submit}>
+        <div className='form-input'> <input type='text' name = 'nameGiven' value = {this.state.nameGiven} onChange={this.handleChange}/></div>
+        <button>Submit</button>
+      </form>
       </div>
-    </div>
-  );
+    )}
 }
 
 export default App;
