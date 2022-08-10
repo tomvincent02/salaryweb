@@ -1,4 +1,5 @@
 const express = require('express');
+const bodyParser = require('body-parser');
 const app = express();
 const mongoose = require('mongoose');
 
@@ -11,10 +12,12 @@ app.use(cors());
 
 app.use(express.json());
 
+
+
 mongoose.connect('mongodb+srv://airpods1:apples%40reTastyif@cluster0.wao9w.mongodb.net/baseball_data?retryWrites=true&w=majority')
 
 app.listen(3301, () => {
-    console.log('server runs perfectly');
+    console.log('server runs perfectly', 3301);
 })
 
 
@@ -60,23 +63,23 @@ app.get("/getplayerid/:nameGiven", (req,res)=> {
 
 
 app.get("/getsalfromid", (req,res)=> {
-    salarymodel.find({ playerID : req.body.playerID}, { salary: 1, _id: 0}, (err, result) => {
+    salarymodel.find({ playerID : req.body.playerID}, (err, result) => {
         if (err){
             res.json(err);
         } else {
-            res.json(result[0]);
+            res.json(result[0].salary);
         }
     });
 } );
 
 app.get("/getbodyid", (req,res)=> {
-    console.log('Body: ', req.body);
-    playermodel.find({ nameGiven : req.body.nameGiven}, { playerID: 1, _id: 0}, (err, result) => {
+    console.log(req.body.nameGiven)
+    playermodel.find({ nameGiven : req.body.nameGiven}, (err,result) => {
         if (err){
             res.json(err);
         } else {
-            res.json(result[0]);
-        }   
+            res.json(result[0].playerID);
+        }
     });
 } );
 

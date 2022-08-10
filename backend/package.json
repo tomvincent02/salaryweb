@@ -4,7 +4,9 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "client": "cd && cd otherend && npm start",
+    "dev": "concurrently \"nodemon server\" \"npm run client\""
   },
   "keywords": [],
   "author": "",
